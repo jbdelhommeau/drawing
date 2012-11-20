@@ -6,7 +6,7 @@ $(function(){
 	/*Backbone model Person*/
 	draw.Person = Backbone.Model.extend({
 		name : "toto",
-		group : 1,
+		group : "Group 1",
 		clear: function() {
       		this.destroy();
     	}
@@ -23,10 +23,14 @@ $(function(){
 
 	draw.PersonView = Backbone.View.extend({
 		tagName : "tr",
+		className : "item-person",
 		template : _.template($("#item-person").html()),
+		events : {
+			"click .destroy": "clear"
+		},
 		initialize: function() {
-			this.model.bind("change", this.render, this);
-			this.model.bind("destroy", this.remove, this);
+			this.model.on("change", this.render, this);
+			this.model.on("destroy", this.remove, this);
 		},
 		render: function(){
 			this.$el.html(this.template(this.model.toJSON()));
@@ -45,9 +49,9 @@ $(function(){
 		initialize : function(){
 			this.input = this.$("#inputPerson");
 
-			Persons.bind('add', this.addOne, this);
-	    	Persons.bind('all', this.render, this);
-	    	Persons.bind('reset', this.addAll, this);
+			Persons.on('add', this.addOne, this);
+	    	Persons.on('all', this.render, this);
+	    	Persons.on('reset', this.addAll, this);
 
 
 	    	Persons.fetch();
@@ -70,13 +74,14 @@ $(function(){
 	      if (e.keyCode != 13) return;
 	      if (!this.input.val()) return;
 
-	      Persons.create({name: this.input.val(), group: 1});
+	      Persons.create({name: this.input.val(), group: "Group 1"});
 	      this.input.val('');
 	    }
 
 	});
 
 	var App = new draw.appPersonView;
+
 
 	draw.tools = {};
 	draw.tools.tooglePage = function(page){

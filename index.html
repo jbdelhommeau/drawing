@@ -11,12 +11,12 @@
 	<div class="container-narrow">
 
 		<div class="masthead">
-			<ul class="nav nav-pills pull-right">
-				<li class="nav-home active"><a href="#home">Accueil</a></li>
-				<li class="nav-persons"><a href="#persons">Personnes</a></li>
-				<li class="nav-draw"><a href="#draw">Tirages</a></li>
+			<ul id="menu" class="nav nav-pills pull-right">
+				<li class="nav-home active"><a href="#home"><i class="icon-home icon-white"></i> Home</a></li>
+				<li class="nav-people"><a href="#people"><i class="icon-user icon-white"></i> People</a></li>
+				<li class="nav-draw"><a href="#draw"><i class="icon-random icon-white"></i> Draw</a></li>
 			</ul>
-			<h3 class="muted">Tirage au sort</h3>
+			<h1 class="muted">Drawing of lot</h1>
 		</div>
 
 		<hr>
@@ -25,16 +25,18 @@
 			<div class="jumbotron">
 				<h1>Tirage au sort entre amis!</h1>
 				<p class="lead">Ce site à pour vocation d'effectuer un tirage au sort entre amis ou famille. Le principe est simple, chaque personne offre à qu'un d'autre un cadeau.</p>
-				<a class="btn btn-large btn-success" href="#persons">Configurer les personnes</a>
+				<a class="btn btn-large btn-success" href="#people">Configure people</a>
 			</div>
 		</div>
 
-		<div id="page-persons" class="page-container hide">
-			<h2>Configurer la liste des personnes</h2>
-			<div class="control-group">
-				<label class="control-label" for="inputPerson">Add new person</label>
-				<div class="controls">
+		<div id="page-people" class="page-container hide">
+			<h2>Configure people</h2>
+			<div class="row-fluid">
+				<div class="span6">
+					<label class="control-label" for="inputPerson">Name</label>
 					<input type="text" id="inputPerson" placeholder="Add new person">
+				</div>
+				<div class="span6" id="content-group">
 				</div>
 			</div>
 
@@ -47,15 +49,24 @@
 						<th style="width:50px;">Action</th>
 					</tr>
 				</thead>
-				<tbody id="listOfPersons"></tbody>
+				<tbody id="listOfPeople"></tbody>
 			</table>
 
 			<!-- Templates -->
-			<script type="text/template" id="item-person">
+			<script type="text/template" id="template-item-person">
 				<td>#</td>
 				<td><%- name %></td>
-				<td><%- group %></td>
+				<td>Group <%- group %></td>
 				<td><a class="btn btn-small btn-danger destroy" title="Delete Person"><i class="icon-remove icon-white"></i></a></td>
+			</script>
+			<script type="text/template" id="template-content-group">
+				<label class="control-label">Group</label>
+				<div class="input-prepend input-append">
+					<button class="btn" type="button" id="btnGroupDown">-</button>
+					<input class="span3" id="labelGroup" value="Group 1" readonly="readonly" type="text">
+					<input type="hidden" id="inputGroup" value="1" >
+					<button class="btn" type="button" id="btnGroupUp">+</button>
+				</div>
 			</script>
 
 		</div>

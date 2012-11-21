@@ -1,30 +1,31 @@
 //A example Backbone application
 $(function(){
 
-	window.draw = {};
+	window.draw = {},
+	draw.currentGroup = 1;
 
 	/*Backbone model Person*/
 	draw.Person = Backbone.Model.extend({
-		name : "toto",
-		group : "Group 1",
+		name : "Anonymous",
+		group : 0,
 		clear: function() {
       		this.destroy();
     	}
 	});
 	
-	/*Backbone collection Persons*/
-	draw.PersonsList = Backbone.Collection.extend({
+	/*Backbone collection People*/
+	draw.PeopleList = Backbone.Collection.extend({
 		model : draw.Person,
-		localStorage: new Store("persons-backbone"),
+		localStorage: new Store("pepole-backbone"),
 
 	});
 
-	var Persons = new draw.PersonsList;
+	var People = new draw.PeopleList;
 
 	draw.PersonView = Backbone.View.extend({
 		tagName : "tr",
 		className : "item-person",
-		template : _.template($("#item-person").html()),
+		template : _.template($("#template-item-person").html()),
 		events : {
 			"click .destroy": "clear"
 		},
@@ -41,31 +42,47 @@ $(function(){
 		}
 	});
 
-	draw.appPersonView = Backbone.View.extend({
-		el : $("#page-persons"),
+	draw.appGroupView = Backbone.View.extend({
+		el : $("#content-group"),
+		template : _.template($("#template-content-group").html()),
 		events : {
-			"keypress #inputPerson": "createOnEnter"
+			//"click .destroy": "clear"
+		},
+		render: function(){
+			this.$el.html(this.template());
+			return this;
+		},
+	});
+
+
+	draw.appPersonView = Backbone.View.extend({
+		el : $("#page-people"),
+		events : {
+			"keypress #inputPerson": "createOnEnter",
+			"click #btnGroupDown": "groupDown",
+			"click #btnGroupUp": "groupUp",
 		},
 		initialize : function(){
 			this.input = this.$("#inputPerson");
 
-			Persons.on('add', this.addOne, this);
-	    	Persons.on('all', this.render, this);
-	    	Persons.on('reset', this.addAll, this);
+			People.on('add', this.addOne, this);
+	    	People.on('all', this.render, this);
+	    	People.on('reset', this.addAll, this);
 
-
-	    	Persons.fetch();
+	    	People.fetch();
 		},
 		render : function(){
+
+
 		},
 	    addOne: function(person) {
 	      var view = new draw.PersonView({model: person});
-	      this.$("#listOfPersons").append(view.render().el);
+	      this.$("#listOfPeople").append(view.render().el);
 	    },
 
 	    // Add all items in the **Todos** collection at once.
 	    addAll: function() {
-	      Persons.each(this.addOne);
+	      People.each(this.addOne);
 	    },
 
 	    // If you hit return in the main input field, create new **Todo** model,
@@ -74,12 +91,21 @@ $(function(){
 	      if (e.keyCode != 13) return;
 	      if (!this.input.val()) return;
 
-	      Persons.create({name: this.input.val(), group: "Group 1"});
+	      People.create({name: this.input.val(), group: 1});
 	      this.input.val('');
+	    },
+
+	    groupDown: function(e) {
+	    	draw
+	    },
+
+	    groupUp: function(e) {
+
 	    }
 
 	});
 
+	new draw.appGroupView;
 	var App = new draw.appPersonView;
 
 
@@ -94,16 +120,16 @@ $(function(){
 	draw.appRouter = Backbone.Router.extend({
 	  routes: {
 	    "home":    "home",    // #help
-	    "persons": "persons",  // #search/kiwis
+	    "people": "people",  // #search/kiwis
 	    "draw":  "draw"   // #search/kiwis/p7
 	  },
 	  home: function() {
 	    console.log("page home");
 	    draw.tools.tooglePage("home");
 	  },
-	  persons: function() {
-	    console.log("page persons");
-	    draw.tools.tooglePage("persons");
+	  people: function() {
+	    console.log("page people");
+	    draw.tools.tooglePage("people");
 	  },
 	  draw: function() {
 	  	console.log("page draw");

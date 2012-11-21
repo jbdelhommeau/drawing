@@ -45,13 +45,28 @@ $(function(){
 	draw.appGroupView = Backbone.View.extend({
 		el : $("#content-group"),
 		template : _.template($("#template-content-group").html()),
+		initialize : function(){
+			this.currentGroup = draw.currentGroup;
+		},
 		events : {
+			"click #btnGroupDown": "groupDown",
+			"click #btnGroupUp": "groupUp",
 			//"click .destroy": "clear"
 		},
 		render: function(){
-			this.$el.html(this.template());
+			this.$el.html(this.template({"current_group": this.currentGroup}));
 			return this;
 		},
+		groupDown: function(){
+			if(this.currentGroup > 1)
+				this.currentGroup--;
+				this.render();
+		},
+		groupUp: function(){
+			if(this.currentGroup < 100)
+				this.currentGroup++;
+				this.render();
+		}
 	});
 
 
@@ -59,11 +74,11 @@ $(function(){
 		el : $("#page-people"),
 		events : {
 			"keypress #inputPerson": "createOnEnter",
-			"click #btnGroupDown": "groupDown",
-			"click #btnGroupUp": "groupUp",
 		},
 		initialize : function(){
-			this.input = this.$("#inputPerson");
+			console.log(this.el);
+			this.inputPerson = this.$("#inputPerson"),
+			this.inputGroup = this.$("#inputGroup");
 
 			People.on('add', this.addOne, this);
 	    	People.on('all', this.render, this);
@@ -80,34 +95,23 @@ $(function(){
 	      this.$("#listOfPeople").append(view.render().el);
 	    },
 
-	    // Add all items in the **Todos** collection at once.
 	    addAll: function() {
 	      People.each(this.addOne);
 	    },
 
-	    // If you hit return in the main input field, create new **Todo** model,
-	    // persisting it to *localStorage*.
 	    createOnEnter: function(e) {
 	      if (e.keyCode != 13) return;
-	      if (!this.input.val()) return;
-
-	      People.create({name: this.input.val(), group: 1});
-	      this.input.val('');
+	      if (!this.inputPerson.val()) return;
+	      People.create({name: this.inputPerson.val(), group: this.inputGroup.val()});
+	      this.inputPerson.val('');
 	    },
-
-	    groupDown: function(e) {
-	    	draw
-	    },
-
-	    groupUp: function(e) {
-
-	    }
 
 	});
 
-	new draw.appGroupView;
-	var App = new draw.appPersonView;
+	var appGroupView = new draw.appGroupView;
+	appGroupView.render();
 
+	var App = new draw.appPersonView;
 
 	draw.tools = {};
 	draw.tools.tooglePage = function(page){
@@ -139,6 +143,5 @@ $(function(){
 
 	new draw.appRouter();
 	Backbone.history.start();
-
 
 });

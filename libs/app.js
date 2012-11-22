@@ -55,6 +55,7 @@ $(function(){
 		},
 		render: function(){
 			this.$el.html(this.template({"current_group": this.currentGroup}));
+			this.inputGroup = this.$("#inputGroup");
 			return this;
 		},
 		groupDown: function(){
@@ -69,7 +70,6 @@ $(function(){
 		}
 	});
 
-
 	draw.appPersonView = Backbone.View.extend({
 		el : $("#page-people"),
 		events : {
@@ -78,7 +78,6 @@ $(function(){
 		initialize : function(){
 			console.log(this.el);
 			this.inputPerson = this.$("#inputPerson"),
-			this.inputGroup = this.$("#inputGroup");
 
 			People.on('add', this.addOne, this);
 	    	People.on('all', this.render, this);
@@ -102,7 +101,7 @@ $(function(){
 	    createOnEnter: function(e) {
 	      if (e.keyCode != 13) return;
 	      if (!this.inputPerson.val()) return;
-	      People.create({name: this.inputPerson.val(), group: this.inputGroup.val()});
+	      People.create({name: this.inputPerson.val(), group: appGroupView.inputGroup.val()});
 	      this.inputPerson.val('');
 	    },
 

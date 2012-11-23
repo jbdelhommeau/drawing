@@ -9,15 +9,17 @@ $(function(){
 		name : "Anonymous",
 		group : 0,
 		clear: function() {
-      		this.destroy();
-    	}
+			this.destroy();
+		}
 	});
 	
 	/*Backbone collection People*/
 	draw.PeopleList = Backbone.Collection.extend({
 		model : draw.Person,
 		localStorage: new Store("pepole-backbone"),
-
+		comparator: function(person) {
+			return person.get('group');
+		}
 	});
 
 	var People = new draw.PeopleList;
@@ -79,31 +81,32 @@ $(function(){
 			console.log(this.el);
 			this.inputPerson = this.$("#inputPerson"),
 
-			People.on('add', this.addOne, this);
-	    	People.on('all', this.render, this);
-	    	People.on('reset', this.addAll, this);
+			//People.on('add', this.addOne, this);
+			People.on('all', this.render, this);
+			People.on('reset', this.addAll, this);
 
-	    	People.fetch();
+			People.fetch();
 		},
 		render : function(){
-
-
+			//alert("render");
 		},
-	    addOne: function(person) {
-	      var view = new draw.PersonView({model: person});
-	      this.$("#listOfPeople").append(view.render().el);
-	    },
+		addOne: function(person) {
+			var view = new draw.PersonView({model: person});
+			this.$("#listOfPeople").append(view.render().el);
+		},
 
-	    addAll: function() {
-	      People.each(this.addOne);
-	    },
+		addAll: function() {
+		  People.each(this.addOne);
+		},
 
-	    createOnEnter: function(e) {
-	      if (e.keyCode != 13) return;
-	      if (!this.inputPerson.val()) return;
-	      People.create({name: this.inputPerson.val(), group: appGroupView.inputGroup.val()});
-	      this.inputPerson.val('');
-	    },
+		createOnEnter: function(e) {
+		  if (e.keyCode != 13) return;
+		  if (!this.inputPerson.val()) return;
+		  this.$("#listOfPeople").empty();
+		  People.create({name: this.inputPerson.val(), group: appGroupView.inputGroup.val()});
+		  People.trigger("reset");
+		  this.inputPerson.val('');
+		},
 
 	});
 
@@ -121,22 +124,22 @@ $(function(){
 	};
 
 	draw.appRouter = Backbone.Router.extend({
-	  routes: {
-	    "home":    "home",    // #help
-	    "people": "people",  // #search/kiwis
-	    "draw":  "draw"   // #search/kiwis/p7
-	  },
+		routes: {
+			"home":    "home",    // #help
+			"people": "people",  // #search/kiwis
+			"draw":  "draw"   // #search/kiwis/p7
+		},
 	  home: function() {
-	    console.log("page home");
-	    draw.tools.tooglePage("home");
+		console.log("page home");
+		draw.tools.tooglePage("home");
 	  },
 	  people: function() {
-	    console.log("page people");
-	    draw.tools.tooglePage("people");
+		console.log("page people");
+		draw.tools.tooglePage("people");
 	  },
 	  draw: function() {
-	  	console.log("page draw");
-	  	draw.tools.tooglePage("draw");
+		console.log("page draw");
+		draw.tools.tooglePage("draw");
 	  }
 	});
 

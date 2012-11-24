@@ -14,7 +14,7 @@
 			<ul id="menu" class="nav nav-pills pull-right">
 				<li class="nav-home active"><a href="#home"><i class="icon-home icon-white"></i> Home</a></li>
 				<li class="nav-people"><a href="#people"><i class="icon-user icon-white"></i> People</a></li>
-				<li class="nav-draw"><a href="#draw"><i class="icon-random icon-white"></i> Draw</a></li>
+				<li class="nav-draws"><a href="#draws"><i class="icon-random icon-white"></i> Draws</a></li>
 			</ul>
 			<h1 class="muted">Drawing of lot</h1>
 		</div>
@@ -23,8 +23,8 @@
 
 		<div id="page-home" class="page-container">
 			<div class="jumbotron">
-				<h1>Tirage au sort entre amis!</h1>
-				<p class="lead">Ce site à pour vocation d'effectuer un tirage au sort entre amis ou famille. Le principe est simple, chaque personne offre à qu'un d'autre un cadeau.</p>
+				<h1>Drawing lots with friends!</h1>
+				<p class="lead">This site dedicated to making a draw between friends or family. The principle is simple, each person gives a gift to another.</p>
 				<a class="btn btn-large btn-success" href="#people">Configure people</a>
 			</div>
 		</div>
@@ -32,11 +32,14 @@
 		<div id="page-people" class="page-container hide">
 			<h2>Configure people</h2>
 			<div class="row-fluid">
-				<div class="span6">
+				<div class="span4">
 					<label class="control-label" for="inputPerson">Name</label>
 					<input type="text" id="inputPerson" placeholder="Add new person">
 				</div>
-				<div class="span6" id="content-group">
+				<div class="span3" id="content-group"></div>
+				<div class="span5">
+					<label>&nbsp;</label>
+					<a class="btn btn-success" id="btn_add_person">Add Person</a>
 				</div>
 			</div>
 
@@ -52,27 +55,20 @@
 				<tbody id="listOfPeople"></tbody>
 			</table>
 
-			<!-- Templates -->
-			<script type="text/template" id="template-item-person">
-				<td>#</td>
-				<td><%- name %></td>
-				<td>Group <%- group %></td>
-				<td><a class="btn btn-small btn-danger destroy" title="Delete Person"><i class="icon-remove icon-white"></i></a></td>
-			</script>
-			<script type="text/template" id="template-content-group">
-				<label class="control-label">Group</label>
-				<div class="input-prepend input-append">
-					<button class="btn" type="button" id="btnGroupDown">-</button>
-					<input class="span3" id="labelGroup" value="Group <%- current_group %>" readonly="readonly" type="text">
-					<input type="hidden" id="inputGroup" value="<%- current_group %>" >
-					<button class="btn" type="button" id="btnGroupUp">+</button>
-				</div>
-			</script>
-
 		</div>
 
-		<div id="page-draw" class="page-container hide">
-			<h2>Launch the draw</h2>
+		<div id="page-draws" class="page-container hide">
+			<h2>Launch draws</h2>
+
+			<div class="row-fluid">
+				<div class="span6" id="content_stats"></div>
+				<div class="span6">
+					<a class="btn btn-large btn-primary" id="launch-draw">Launch a draw</a>
+				</div>
+			</div>
+
+			<div id="content_draws"></div>
+
 		</div>
 
 		<hr>
@@ -80,6 +76,50 @@
 		<div class="footer">
 			<p>&copy; Jean-Baptiste Delhommeau 2012</p>
 		</div>
+
+		<!-- Templates -->
+		<script type="text/template" id="template-item-person">
+			<td>#</td>
+			<td><%- name %></td>
+			<td>Group <%- group %></td>
+			<td><a class="btn btn-small btn-danger destroy" title="Delete Person"><i class="icon-remove icon-white"></i></a></td>
+		</script>
+		<script type="text/template" id="template-content-group">
+			<label class="control-label">Group</label>
+			<div class="input-prepend input-append">
+				<button class="btn" type="button" id="btnGroupDown">-</button>
+				<input class="span5" id="labelGroup" value="Group <%- current_group %>" readonly="readonly" type="text">
+				<input type="hidden" id="inputGroup" value="<%- current_group %>" >
+				<button class="btn" type="button" id="btnGroupUp">+</button>
+			</div>
+		</script>
+		<script type="text/template" id="template-table-draw">
+			<div class="row-fluid">
+				<div class="span12">
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Person who offers</th>
+								<th>=></th>
+								<th>Receiver</th>
+							</tr>
+						</thead>
+						<tbody id="draw_1" class="drawingPeople"></tbody>
+					</table>
+				</div>
+			</div>
+		</script>
+		<script type="text/template" id="template-table-draw-item-person">
+			<td>#</td>
+			<td><%- name %></td>
+			<td><i class=" icon-forward"></i></td>
+			<td><%- name %></td>
+		</script>
+		<script type="text/template" id="template-draw-stats">
+			<p><i class="icon-user"></i> <%- countPerson %> people on your list.</p>
+			<p><i class="icon-signal"></i> You have <%- countStat %> possibilities draw.</p>
+		</script>
 
 	</div>
 	</body>

@@ -1,4 +1,18 @@
-#Tirage de noël
+#Drawing lots with friends!
 
-Ce site à pour vocation d'effectuer un tirage au sort entre amis ou famille.
-Le principe est simple, chaque personne offre à une autre personne un cadeau.
+This site dedicated to making a draw between friends or family. The principle is simple, each person gives a gift to another.
+
+### Try application
+
+  - Download zip
+  - Unzip
+  - Launch index.html in your favorite navigator
+  - Enjoy !
+
+### What technologies ?
+
+  - HTML, CSS (bootstrap twitter)
+  - Zepto (Jquery light)
+  - Backbone.js (MVC javascript)
+  - Underscore.js (library for JavaScript)
+  - Backbone.LocalStorage.js (localStorage backbone's models)
